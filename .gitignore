@@ -1,0 +1,11 @@
+.dep
+Descriptors.lst
+Descriptors.o
+Joystick.eep
+Joystick.elf
+Joystick.hex
+Joystick.lss
+Joystick.lst
+Joystick.map
+Joystick.o
+Joystick.sym
