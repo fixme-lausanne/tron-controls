@@ -702,7 +702,7 @@ clean_doxygen:
 	rm -rf Documentation
 
 load:
-	teensy_loader_cli/teensy_loader_cli -mmcu=$(MCU) -w -v $(TARGET).hex
+	teensy_loader_cli -mmcu=$(MCU) -w -v $(TARGET).hex
 
 # Create object files directory
 $(shell mkdir $(OBJDIR) 2>/dev/null)
