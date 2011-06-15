@@ -1,13 +1,13 @@
 /*
              LUFA Library
-     Copyright (C) Dean Camera, 2010.
+     Copyright (C) Dean Camera, 2011.
 
   dean [at] fourwalledcubicle [dot] com
            www.lufa-lib.org
 */
 
 /*
-  Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
+  Copyright 2011  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
   Permission to use, copy, modify, distribute, and sell this
   software and its documentation for any purpose is hereby granted
@@ -57,12 +57,9 @@
 		 */
 		typedef struct
 		{
-			uint8_t Joystick1;
-			uint8_t Joystick2;
-			uint8_t Joystick3;
-			uint8_t Joystick4;
-			uint8_t Button1;
-			uint8_t Button2;
+			int8_t  X; /**< Current absolute joystick X position, as a signed 8-bit integer */
+			int8_t  Y; /**< Current absolute joystick Y position, as a signed 8-bit integer */
+			uint8_t Button; /**< Bit mask of the currently pressed joystick buttons */
 		} USB_JoystickReport_Data_t;
 
 	/* Macros: */
