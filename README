@@ -1,0 +1,22 @@
+TRON Joystick controller
+========================
+
+Joystick input
+--------------
+
+Port D
+
+up		D0
+down	D1
+left	D2
+right	D3
+
+
+Buttons input
+-------------
+
+Port F
+
+trigger	F5
+button2	F6
+button3	F7
