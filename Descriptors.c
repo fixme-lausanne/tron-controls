@@ -57,8 +57,8 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 				HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
 					HID_RI_USAGE(8, 0x30),                   /* X */
 					HID_RI_USAGE(8, 0x31),                   /* Y */
-					HID_RI_LOGICAL_MINIMUM(2, -1),           /* down/left */
-					HID_RI_LOGICAL_MAXIMUM(2, 1),            /* up/right */
+					HID_RI_LOGICAL_MINIMUM(8, -1),           /* down/left */
+					HID_RI_LOGICAL_MAXIMUM(8, 1),            /* up/right */
 					HID_RI_REPORT_COUNT(8, 0x02),            /* two axes */
 					HID_RI_REPORT_SIZE(8, 0x02),             /* 2 bits each */
 					HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
