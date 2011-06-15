@@ -1,13 +1,13 @@
 /*
              LUFA Library
-     Copyright (C) Dean Camera, 2010.
+     Copyright (C) Dean Camera, 2011.
 
   dean [at] fourwalledcubicle [dot] com
            www.lufa-lib.org
 */
 
 /*
-  Copyright 2010  Dean Camera (dean [at] fourwalledcubicle [dot] com)
+  Copyright 2011  Dean Camera (dean [at] fourwalledcubicle [dot] com)
 
   Permission to use, copy, modify, distribute, and sell this
   software and its documentation for any purpose is hereby granted
@@ -29,114 +29,89 @@
 */
 
 /** \file
- *  \brief Board specific LED driver header for the Fletchtronics BUMBLEB.
- *
- *  Board specific LED driver header for the Fletchtronics BUMBLEB (http://fletchtronics.net/bumble-b).
- *
- *  The BUMBLEB third-party board does not include any on-board peripherals, but does have an officially recommended
- *  external peripheral layout for buttons, LEDs and a Joystick.
+ *  \brief Board specific LED driver header for the PJRC Teensy boards.
+ *  \copydetails Group_LEDs_TEENSY
  *
  *  \note This file should not be included directly. It is automatically included as needed by the LEDs driver
  *        dispatch header located in LUFA/Drivers/Board/LEDs.h.
  */
 
 /** \ingroup Group_LEDs
- *  @defgroup Group_LEDs_BUMBLEB BUMBLEB
+ *  \defgroup Group_LEDs_TEENSY TEENSY
+ *  \brief Board specific LED driver header for the PJRC Teensy boards.
  *
- *  Board specific LED driver header for the Fletchtronics BUMBLEB (http://fletchtronics.net/bumble-b). The BUMBLEB
- *  third-party board does not include any on-board peripherals, but does have an officially recommended external
- *  peripheral layout for buttons, LEDs and a Joystick.
- *
- *  \note This file should not be included directly. It is automatically included as needed by the LEDs driver
- *        dispatch header located in LUFA/Drivers/Board/LEDs.h.
+ *  Board specific LED driver header for the PJRC Teensy boards (http://www.pjrc.com/teensy/index.html).
  *
  *  @{
  */
 
-#ifndef __LEDS_BUMBLEB_H__
-#define __LEDS_BUMBLEB_H__
+#include <avr/io.h>
+#include <LUFA/Common/Common.h>
+#include <avr/sfr_defs.h>
 
-	/* Includes: */
-		#include <avr/io.h>
-		#include <LUFA/Common/Common.h>
-		#include <avr/sfr_defs.h>
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
-	/* Enable C linkage for C++ Compilers: */
-		#if defined(__cplusplus)
-			extern "C" {
-		#endif
-
-	/* Preprocessor Checks: */
-		#if !defined(__INCLUDE_FROM_LEDS_H)
-			#error Do not include this file directly. Include LUFA/Drivers/Board/LEDS.h instead.
-		#endif
+#if !defined(__INCLUDE_FROM_LEDS_H)
+#error Do not include this file directly. Include LUFA/Drivers/Board/LEDS.h instead.
+#endif
 
 	/* Public Interface - May be used in end-application: */
-		/* Macros: */
-			/** LED mask for the first LED on the board. */
-			#define LEDS_LED1        (1 << 4)
+	/* Macros: */
+	/** LED mask for the first LED on the board. */
+#define LEDS_LED1        (1 << 6)
 
-			/** LED mask for the second LED on the board. */
-			#define LEDS_LED2        (1 << 5)
+	/** LED mask for all the LEDs on the board. */
+#define LEDS_ALL_LEDS    LEDS_LED1
 
-			/** LED mask for the third LED on the board. */
-			#define LEDS_LED3        (1 << 6)
+	/** LED mask for none of the board LEDs. */
+#define LEDS_NO_LEDS     0
 
-			/** LED mask for the fourth LED on the board. */
-			#define LEDS_LED4        (1 << 7)
+	/* Inline Functions: */
+#if !defined(__DOXYGEN__)
+	static inline void LEDs_Init(void)
+	{
+		DDRD  |= LEDS_ALL_LEDS;
+		PORTD |= LEDS_ALL_LEDS;
+	}
 
-			/** LED mask for all the LEDs on the board. */
-			#define LEDS_ALL_LEDS    (LEDS_LED1 | LEDS_LED2 | LEDS_LED3 | LEDS_LED4)
+	static inline void LEDs_TurnOnLEDs(const uint8_t LEDMask)
+	{
+		PORTD &= ~LEDMask;
+	}
 
-			/** LED mask for none of the board LEDs. */
-			#define LEDS_NO_LEDS     0
+	static inline void LEDs_TurnOffLEDs(const uint8_t LEDMask)
+	{
+		PORTD |= LEDMask;
+	}
 
-		/* Inline Functions: */
-		#if !defined(__DOXYGEN__)
-			static inline void LEDs_Init(void)
-			{
-				DDRB  |=  LEDS_ALL_LEDS;
-				PORTB &= ~LEDS_ALL_LEDS;
-			}
+	static inline void LEDs_SetAllLEDs(const uint8_t LEDMask)
+	{
+		PORTD = ((PORTD | LEDS_ALL_LEDS) & ~LEDMask);
+	}
 
-			static inline void LEDs_TurnOnLEDs(const uint8_t LedMask)
-			{
-				PORTB |= LedMask;
-			}
+	static inline void LEDs_ChangeLEDs(const uint8_t LEDMask,
+					   const uint8_t ActiveMask)
+	{
+		PORTD = ((PORTD | LEDMask) & ~ActiveMask);
+	}
 
-			static inline void LEDs_TurnOffLEDs(const uint8_t LedMask)
-			{
-				PORTB &= ~LedMask;
-			}
+	static inline void LEDs_ToggleLEDs(const uint8_t LEDMask)
+	{
+		PORTD ^= LEDMask;
+	}
 
-			static inline void LEDs_SetAllLEDs(const uint8_t LedMask)
-			{
-				PORTB = ((PORTB & ~LEDS_ALL_LEDS) | LedMask);
-			}
-
-			static inline void LEDs_ChangeLEDs(const uint8_t LedMask,
-			                                   const uint8_t ActiveMask)
-			{
-				PORTB = ((PORTB & ~LedMask) | ActiveMask);
-			}
-
-			static inline void LEDs_ToggleLEDs(const uint8_t LEDMask)
-			{
-				PORTB ^= LEDMask;
-			}
-
-			static inline uint8_t LEDs_GetLEDs(void) ATTR_WARN_UNUSED_RESULT;
-			static inline uint8_t LEDs_GetLEDs(void)
-			{
-				return (PORTB & LEDS_ALL_LEDS);
-			}
-		#endif
+	static inline uint8_t LEDs_GetLEDs(void) ATTR_WARN_UNUSED_RESULT;
+	static inline uint8_t LEDs_GetLEDs(void)
+	{
+		return (~PORTD & LEDS_ALL_LEDS);
+	}
+#endif
 
 	/* Disable C linkage for C++ Compilers: */
-		#if defined(__cplusplus)
-			}
-		#endif
-
+#if defined(__cplusplus)
+}
 #endif
 
 /** @} */

@@ -28,92 +28,48 @@
   this software.
 */
 
-/** \file
- *  \brief Board specific joystick driver header for the Fletchtronics BUMLEB.
- *
- *  Board specific joystick driver header for the Fletchtronics BUMBLEB (http://fletchtronics.net/bumble-b).
- *
- *  The BUMBLEB third-party board does not include any on-board peripherals, but does have an officially recommended
- *  external peripheral layout for buttons, LEDs and a Joystick.
- *
- *  \note This file should not be included directly. It is automatically included as needed by the joystick driver
- *        dispatch header located in LUFA/Drivers/Board/Joystick.h.
- */
+#include <avr/io.h>
+#include <LUFA/Common/Common.h>
+#include <avr/sfr_defs.h>
 
-/** \ingroup Group_Joystick
- *  @defgroup Group_Joystick_BUMBLEB BUMBLEB
- *
- *  Board specific joystick driver header for the Fletchtronics BUMBLEB (http://fletchtronics.net/bumble-b). The BUMBLEB
- *  third-party board does not include any on-board peripherals, but does have an officially recommended external peripheral
- *  layout for buttons, LEDs and a Joystick.
- *
- *  \note This file should not be included directly. It is automatically included as needed by the joystick driver
- *        dispatch header located in LUFA/Drivers/Board/Joystick.h.
- *
- *  @{
- */
+#if defined(__cplusplus)
+extern "C" {
+#endif
 
-#ifndef __JOYSTICK_BUMBLEB_H__
-#define __JOYSTICK_BUMBLEB_H__
-
-	/* Includes: */
-		#include <avr/io.h>
-		#include <LUFA/Common/Common.h>
-		#include <avr/sfr_defs.h>
-
-	/* Enable C linkage for C++ Compilers: */
-		#if defined(__cplusplus)
-			extern "C" {
-		#endif
-
-	/* Preprocessor Checks: */
-		#if !defined(__INCLUDE_FROM_JOYSTICK_H)
-			#error Do not include this file directly. Include LUFA/Drivers/Board/Joystick.h instead.
-		#endif
+#if !defined(__INCLUDE_FROM_JOYSTICK_H)
+#error Do not include this file directly. Include LUFA/Drivers/Board/Joystick.h instead.
+#endif
 
 	/* Private Interface - For use in library only: */
-	#if !defined(__DOXYGEN__)
-		/* Macros: */
-			#define JOY_MASK                 ((1 << 0) | (1 << 1) | (1 << 2) | (1 << 3) | (1 << 4))
-	#endif
+#if !defined(__DOXYGEN__)
+#define JOY_MASK                 ((1 << 0) | (1 << 1) | (1 << 2) | (1 << 3))
+#endif
 
 	/* Public Interface - May be used in end-application: */
-		/* Macros: */
-			/** Mask for the joystick being pushed in the left direction. */
-			#define JOY_LEFT                  (1 << 2)
+	/* Macros: */
+#define JOY_UP                    (1 << 0)
+#define JOY_DOWN                  (1 << 1)
+#define JOY_LEFT                  (1 << 2)
+#define JOY_RIGHT                 (1 << 3)
 
-			/** Mask for the joystick being pushed in the upward direction. */
-			#define JOY_UP                    (1 << 3)
+	/* Inline Functions: */
+#if !defined(__DOXYGEN__)
+	static inline void Joystick_Init(void)
+	{
+		DDRD  &= ~JOY_MASK;
+		PORTD |= JOY_MASK;
+	}
 
-			/** Mask for the joystick being pushed in the right direction. */
-			#define JOY_RIGHT                 (1 << 0)
-
-			/** Mask for the joystick being pushed in the downward direction. */
-			#define JOY_DOWN                  (1 << 1)
-
-			/** Mask for the joystick being pushed inward. */
-			#define JOY_PRESS                 (1 << 4)
-
-		/* Inline Functions: */
-		#if !defined(__DOXYGEN__)
-			static inline void Joystick_Init(void)
-			{
-				DDRD  &= ~JOY_MASK;
-				PORTD |= JOY_MASK;
-			}
-
-			static inline uint8_t Joystick_GetStatus(void) ATTR_WARN_UNUSED_RESULT;
-			static inline uint8_t Joystick_GetStatus(void)
-			{
-				return (uint8_t)(~PIND & JOY_MASK);
-			}
-		#endif
+	static inline uint8_t Joystick_GetStatus(void) ATTR_WARN_UNUSED_RESULT;
+	static inline uint8_t Joystick_GetStatus(void)
+	{
+		return (uint8_t)(~PIND & JOY_MASK);
+	}
+#endif
 
 	/* Disable C linkage for C++ Compilers: */
-		#if defined(__cplusplus)
-			}
-		#endif
-
+#if defined(__cplusplus)
+}
 #endif
 
 /** @} */
