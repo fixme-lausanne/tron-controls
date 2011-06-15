@@ -70,14 +70,14 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 
 				HID_RI_USAGE_PAGE(8, 0x09),                 /* Buttons */
 				HID_RI_USAGE_MINIMUM(8, 0x01),              /* two... */
-				HID_RI_USAGE_MAXIMUM(8, 0x02),              /* ...buttons */
+				HID_RI_USAGE_MAXIMUM(8, 0x03),              /* ...buttons */
 				HID_RI_LOGICAL_MINIMUM(8, 0x00),            /* each off... */
 				HID_RI_LOGICAL_MAXIMUM(8, 0x01),            /* ...or on */
 				HID_RI_REPORT_COUNT(8, 0x02),               /* two buttons */
 				HID_RI_REPORT_SIZE(8, 0x01),                /* one bit */
 				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 
-				HID_RI_REPORT_COUNT(8, 0x06),               /* 6 bits padding */
+				HID_RI_REPORT_COUNT(8, 0x05),               /* 6 bits padding */
 				HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 			HID_RI_END_COLLECTION(0)
 };
