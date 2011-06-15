@@ -45,14 +45,41 @@
  */ 
 const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 {
-	/* Use the HID class driver's standard Joystick report.
-	 *   Min X/Y Axis values: -100
-	 *   Max X/Y Axis values:  100
-	 *   Min physical X/Y Axis values (used to determine resolution): -1
-	 *   Max physical X/Y Axis values (used to determine resolution):  1
+	/* Digital Joystick with two buttons:
+	 *   Min X/Y Axis values: -1 (left/down)
+	 *   Max X/Y Axis values:  1 (right/up)
 	 *   Buttons: 2
 	 */
-	HID_DESCRIPTOR_JOYSTICK(-100, 100, -1, 1, 2)
+			HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
+			HID_RI_USAGE(8, 0x05),                         /* Game Pad */
+			HID_RI_COLLECTION(8, 0x01),                    /* Application Collection */
+				HID_RI_USAGE(8, 0x01),                      /* Pointer */
+				HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
+					HID_RI_USAGE(8, 0x30),                   /* X */
+					HID_RI_USAGE(8, 0x31),                   /* Y */
+					HID_RI_LOGICAL_MINIMUM(2, -1),           /* down/left */
+					HID_RI_LOGICAL_MAXIMUM(2, 1),            /* up/right */
+					HID_RI_REPORT_COUNT(8, 0x02),            /* two axes */
+					HID_RI_REPORT_SIZE(8, 0x02),             /* 2 bits each */
+					HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+				HID_RI_END_COLLECTION(0),
+
+				HID_RI_REPORT_COUNT(8, 0x04),               /* 4 bit padding */
+				HID_RI_REPORT_SIZE(8, 0x01),                /* ...each one bit */
+				HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+
+				HID_RI_USAGE_PAGE(8, 0x09),                 /* Buttons */
+				HID_RI_USAGE_MINIMUM(8, 0x01),              /* two... */
+				HID_RI_USAGE_MAXIMUM(8, 0x02),              /* ...buttons */
+				HID_RI_LOGICAL_MINIMUM(8, 0x00),            /* each off... */
+				HID_RI_LOGICAL_MAXIMUM(8, 0x01),            /* ...or on */
+				HID_RI_REPORT_COUNT(8, 0x02),               /* two buttons */
+				HID_RI_REPORT_SIZE(8, 0x01),                /* one bit */
+				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+
+				HID_RI_REPORT_COUNT(8, 0x06),               /* 6 bits padding */
+				HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+			HID_RI_END_COLLECTION(0)
 };
 
 /** Device descriptor structure. This descriptor, located in FLASH memory, describes the overall
