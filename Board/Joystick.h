@@ -58,12 +58,21 @@ extern "C" {
 	{
 		DDRD  &= ~JOY_MASK;
 		PORTD |= JOY_MASK;
+
+		DDRB  = 0;
+		PORTB |= 0xff;
 	}
 
 	static inline uint8_t Joystick_GetStatus(void) ATTR_WARN_UNUSED_RESULT;
 	static inline uint8_t Joystick_GetStatus(void)
 	{
 		return (uint8_t)(~PIND & JOY_MASK);
+	}
+
+	static inline uint8_t Joystick_GetDial(void) ATTR_WARN_UNUSED_RESULT;
+	static inline uint8_t Joystick_GetDial(void)
+	{
+		return (uint8_t)(PINB);
 	}
 #endif
 

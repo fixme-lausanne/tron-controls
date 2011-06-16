@@ -164,6 +164,8 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 	else
 		JoystickReport->Joystick.X = 0;
 
+	JoystickReport->Dial = Joystick_GetDial();
+
 	JoystickReport->Button = 0;
 	if (ButtonStatus_LCL & BUTTONS_BUTTON1)
 	  JoystickReport->Button |= (1 << 0);

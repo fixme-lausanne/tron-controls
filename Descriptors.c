@@ -68,6 +68,13 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 				HID_RI_REPORT_SIZE(8, 0x01),                /* ...each one bit */
 				HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 
+				HID_RI_USAGE(8, 0x37),                      /* Dial */
+				HID_RI_USAGE_MINIMUM(8, 0x00),				/* ranging from 0... */
+				HID_RI_USAGE_MAXIMUM(8, 0xff),				/* ...to 255 */
+				HID_RI_REPORT_COUNT(8, 0x01),				/* one time... */
+				HID_RI_REPORT_SIZE(8, 0x08),				/* ...8 bits */
+				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+
 				HID_RI_USAGE_PAGE(8, 0x09),                 /* Buttons */
 				HID_RI_USAGE_MINIMUM(8, 0x01),              /* two... */
 				HID_RI_USAGE_MAXIMUM(8, 0x03),              /* ...buttons */

@@ -61,6 +61,7 @@
 				int X : 2;
 				int Y : 2;
 			} Joystick;
+			uint8_t Dial;
 			uint8_t Button; /**< Bit mask of the currently pressed joystick buttons */
 		} USB_JoystickReport_Data_t;
 
