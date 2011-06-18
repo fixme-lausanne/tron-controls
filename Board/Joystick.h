@@ -43,6 +43,7 @@ extern "C" {
 	/* Private Interface - For use in library only: */
 #if !defined(__DOXYGEN__)
 #define JOY_MASK                 ((1 << 0) | (1 << 1) | (1 << 2) | (1 << 3))
+#define DIAL_MASK	(0x7f)
 #endif
 
 	/* Public Interface - May be used in end-application: */
@@ -59,8 +60,8 @@ extern "C" {
 		DDRD  &= ~JOY_MASK;
 		PORTD |= JOY_MASK;
 
-		DDRB  = 0;
-		PORTB |= 0xff;
+		DDRB  &= ~DIAL_MASK;
+		PORTB |= DIAL_MASK;
 	}
 
 	static inline uint8_t Joystick_GetStatus(void) ATTR_WARN_UNUSED_RESULT;
@@ -72,7 +73,7 @@ extern "C" {
 	static inline uint8_t Joystick_GetDial(void) ATTR_WARN_UNUSED_RESULT;
 	static inline uint8_t Joystick_GetDial(void)
 	{
-		return (uint8_t)(PINB);
+		return (uint8_t)(PINB & DIAL_MASK);
 	}
 #endif
 
