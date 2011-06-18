@@ -51,7 +51,7 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 	 *   Buttons: 2
 	 */
 			HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
-			HID_RI_USAGE(8, 0x05),                         /* Game Pad */
+			HID_RI_USAGE(8, 0x00),                         /* Game Pad */
 			HID_RI_COLLECTION(8, 0x01),                    /* Application Collection */
 				HID_RI_USAGE(8, 0x01),                      /* Pointer */
 				HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
@@ -60,27 +60,23 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 					HID_RI_LOGICAL_MINIMUM(8, -1),           /* down/left */
 					HID_RI_LOGICAL_MAXIMUM(8, 1),            /* up/right */
 					HID_RI_REPORT_COUNT(8, 0x02),            /* two axes */
-					HID_RI_REPORT_SIZE(8, 0x02),             /* 2 bits each */
+					HID_RI_REPORT_SIZE(8, 0x04),             /* 2 bits each */
 					HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 				HID_RI_END_COLLECTION(0),
 
-				HID_RI_REPORT_COUNT(8, 0x04),               /* 4 bit padding */
-				HID_RI_REPORT_SIZE(8, 0x01),                /* ...each one bit */
-				HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
-
-				HID_RI_USAGE(8, 0x37),                      /* Dial */
-				HID_RI_USAGE_MINIMUM(8, 0x00),				/* ranging from 0... */
-				HID_RI_USAGE_MAXIMUM(8, 0xff),				/* ...to 255 */
+				HID_RI_USAGE(8, 0x37),						/* Dial */
+				HID_RI_LOGICAL_MINIMUM(8, 0),				/* ranging from 0... */
+			    HID_RI_LOGICAL_MAXIMUM(8, 127),				/* ...to 127 */
 				HID_RI_REPORT_COUNT(8, 0x01),				/* one time... */
 				HID_RI_REPORT_SIZE(8, 0x08),				/* ...8 bits */
-				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE | (1 << 3)),
 
 				HID_RI_USAGE_PAGE(8, 0x09),                 /* Buttons */
-				HID_RI_USAGE_MINIMUM(8, 0x01),              /* two... */
-				HID_RI_USAGE_MAXIMUM(8, 0x03),              /* ...buttons */
+				HID_RI_USAGE_MINIMUM(8, 0x01),              /* from 1... */
+				HID_RI_USAGE_MAXIMUM(8, 0x03),              /* ...to 3 buttons */
 				HID_RI_LOGICAL_MINIMUM(8, 0x00),            /* each off... */
 				HID_RI_LOGICAL_MAXIMUM(8, 0x01),            /* ...or on */
-				HID_RI_REPORT_COUNT(8, 0x02),               /* two buttons */
+				HID_RI_REPORT_COUNT(8, 0x03),               /* two buttons */
 				HID_RI_REPORT_SIZE(8, 0x01),                /* one bit */
 				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 

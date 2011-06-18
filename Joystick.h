@@ -58,8 +58,8 @@
 		typedef struct
 		{
 			struct {
-				int X : 2;
-				int Y : 2;
+				int X : 4;
+				int Y : 4;
 			} Joystick;
 			uint8_t Dial;
 			uint8_t Button; /**< Bit mask of the currently pressed joystick buttons */
