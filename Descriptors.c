@@ -45,14 +45,35 @@
  */ 
 const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 {
+
+			HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
+			HID_RI_USAGE(8, 0x02),                         /* Mouse */
+			HID_RI_COLLECTION(8, 0x01),                    /* Application Collection */
+					HID_RI_REPORT_ID(8, HID_REPORTID_MouseReport),
+				HID_RI_USAGE(8, 0x01),                      /* Pointer */
+				HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
+					HID_RI_USAGE_PAGE(8, 0x01),
+#if 0
+					HID_RI_USAGE(8, 0x30),                   /* X */
+#else
+					HID_RI_USAGE(8, 0x37),						/* Dial (relative) */
+#endif
+					HID_RI_LOGICAL_MINIMUM(8, -127),			/* ranging from -127... */
+					HID_RI_LOGICAL_MAXIMUM(8, 127),				/* ...to 127 */
+					HID_RI_REPORT_COUNT(8, 0x01),				/* one time... */
+					HID_RI_REPORT_SIZE(8, 0x08),				/* ...8 bits */
+					HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_RELATIVE),
+				HID_RI_END_COLLECTION(0),
+			HID_RI_END_COLLECTION(0),
 	/* Digital Joystick with two buttons:
 	 *   Min X/Y Axis values: -1 (left/down)
 	 *   Max X/Y Axis values:  1 (right/up)
 	 *   Buttons: 2
 	 */
 			HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
-			HID_RI_USAGE(8, 0x00),                         /* Game Pad */
+			HID_RI_USAGE(8, 0x04),                         /* Joystick */
 			HID_RI_COLLECTION(8, 0x01),                    /* Application Collection */
+					HID_RI_REPORT_ID(8, HID_REPORTID_JoystickReport),
 				HID_RI_USAGE(8, 0x01),                      /* Pointer */
 				HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
 					HID_RI_USAGE(8, 0x30),                   /* X */
@@ -64,13 +85,6 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 					HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 				HID_RI_END_COLLECTION(0),
 
-				HID_RI_USAGE(8, 0x37),						/* Dial */
-				HID_RI_LOGICAL_MINIMUM(8, 0),				/* ranging from 0... */
-			    HID_RI_LOGICAL_MAXIMUM(8, 127),				/* ...to 127 */
-				HID_RI_REPORT_COUNT(8, 0x01),				/* one time... */
-				HID_RI_REPORT_SIZE(8, 0x08),				/* ...8 bits */
-				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE | (1 << 3)),
-
 				HID_RI_USAGE_PAGE(8, 0x09),                 /* Buttons */
 				HID_RI_USAGE_MINIMUM(8, 0x01),              /* from 1... */
 				HID_RI_USAGE_MAXIMUM(8, 0x03),              /* ...to 3 buttons */
@@ -80,9 +94,11 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 				HID_RI_REPORT_SIZE(8, 0x01),                /* one bit */
 				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 
-				HID_RI_REPORT_COUNT(8, 0x05),               /* 6 bits padding */
+				HID_RI_REPORT_SIZE(8, 0x05),				/* 5 bits... */
+				HID_RI_REPORT_COUNT(8, 0x01),               /* ...padding */
 				HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
-			HID_RI_END_COLLECTION(0)
+			HID_RI_END_COLLECTION(0),
+
 };
 
 /** Device descriptor structure. This descriptor, located in FLASH memory, describes the overall

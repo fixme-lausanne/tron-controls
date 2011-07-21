@@ -145,37 +145,65 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
                                          void* ReportData,
                                          uint16_t* const ReportSize)
 {
-	USB_JoystickReport_Data_t* JoystickReport = (USB_JoystickReport_Data_t*)ReportData;
-
 	uint8_t JoyStatus_LCL    = Joystick_GetStatus();
 	uint8_t ButtonStatus_LCL = Buttons_GetStatus();
+	static int selector = 1;
 
-	if (JoyStatus_LCL & JOY_UP)
-		JoystickReport->Joystick.Y = -1;
-	else if (JoyStatus_LCL & JOY_DOWN)
-		JoystickReport->Joystick.Y = 1;
-	else
-		JoystickReport->Joystick.Y = 0;
+	selector = !selector;
+	if (selector) {
+		static USB_JoystickReport_Data_t JoystickReportPrev;
+		USB_JoystickReport_Data_t* JoystickReport = (USB_JoystickReport_Data_t*)ReportData;
 
-	if (JoyStatus_LCL & JOY_LEFT)
-		JoystickReport->Joystick.X =  -1;
-	else if (JoyStatus_LCL & JOY_RIGHT)
-		JoystickReport->Joystick.X = 1;
-	else
-		JoystickReport->Joystick.X = 0;
+		if (JoyStatus_LCL & JOY_UP)
+			JoystickReport->Joystick.Y = -1;
+		else if (JoyStatus_LCL & JOY_DOWN)
+			JoystickReport->Joystick.Y = 1;
+		else
+			JoystickReport->Joystick.Y = 0;
 
-	JoystickReport->Dial = Joystick_GetDial();
+		if (JoyStatus_LCL & JOY_LEFT)
+			JoystickReport->Joystick.X =  -1;
+		else if (JoyStatus_LCL & JOY_RIGHT)
+			JoystickReport->Joystick.X = 1;
+		else
+			JoystickReport->Joystick.X = 0;
 
-	JoystickReport->Button = 0;
-	if (ButtonStatus_LCL & BUTTONS_BUTTON1)
-	  JoystickReport->Button |= (1 << 0);
-	if (ButtonStatus_LCL & BUTTONS_BUTTON2)
-	  JoystickReport->Button |= (1 << 1);
-	if (ButtonStatus_LCL & BUTTONS_BUTTON3)
-	  JoystickReport->Button |= (1 << 2);
+		JoystickReport->Button = 0;
+		if (ButtonStatus_LCL & BUTTONS_BUTTON1)
+			JoystickReport->Button |= (1 << 0);
+		if (ButtonStatus_LCL & BUTTONS_BUTTON2)
+			JoystickReport->Button |= (1 << 1);
+		if (ButtonStatus_LCL & BUTTONS_BUTTON3)
+			JoystickReport->Button |= (1 << 2);
 
-	*ReportSize = sizeof(USB_JoystickReport_Data_t);
-	return false;
+		if (memcmp(&JoystickReportPrev, JoystickReport, sizeof(JoystickReportPrev)) == 0)
+			return false;
+
+		*ReportID = HID_REPORTID_JoystickReport;
+		*ReportSize = sizeof(*JoystickReport);
+
+		JoystickReportPrev = *JoystickReport;
+		return true;
+	} else {
+		static USB_JoyMouseReport_Data_t MouseReportPrev;
+		USB_JoyMouseReport_Data_t* MouseReport = (USB_JoyMouseReport_Data_t*)ReportData;
+		static int last_pos = 0;
+		int new_pos;
+
+		new_pos = Joystick_GetDial();
+
+		MouseReport->Dial = new_pos - last_pos;
+		last_pos = new_pos;
+
+		if (memcmp(&MouseReportPrev, MouseReport, sizeof(MouseReportPrev)) == 0)
+			return false;
+
+		*ReportID = HID_REPORTID_MouseReport;
+		*ReportSize = sizeof(*MouseReport);
+
+		MouseReportPrev = *MouseReport;
+		return true;
+	}
 }
 
 /** HID class driver callback function for the processing of HID reports from the host.
