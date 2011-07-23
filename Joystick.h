@@ -63,7 +63,9 @@ typedef struct
 
 typedef struct
 {
-	uint8_t Dial;
+	uint8_t Button;
+	uint8_t X;
+	uint8_t Y;
 } USB_JoyMouseReport_Data_t;
 
 /* Macros: */

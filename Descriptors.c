@@ -45,60 +45,75 @@
  */ 
 const USB_Descriptor_HIDReport_Datatype_t PROGMEM JoystickReport[] =
 {
+	/*
+	 * Standard Mouse (seems Linux needs this format).
+	 * Mind the report id!
+	 * Buttons, X, Y
+	 * Only Y is actually used.
+	 */
+	HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
+	HID_RI_USAGE(8, 0x02),                         /* Mouse */
+	HID_RI_COLLECTION(8, 0x01),                     /* Application Collection */
+		HID_RI_REPORT_ID(8, HID_REPORTID_MouseReport),
+		HID_RI_USAGE(8, 0x01),                      /* Pointer */
+		HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
+			HID_RI_USAGE_PAGE(8, 0x09),              /* Buttons */
+			HID_RI_USAGE_MINIMUM(8, 0x01),           /* from 1... */
+			HID_RI_USAGE_MAXIMUM(8, 0x01),	         /* ...to 1 */
+			HID_RI_LOGICAL_MINIMUM(8, 0x00),         /* off or... */
+			HID_RI_LOGICAL_MAXIMUM(8, 0x01),		 /* ...on */
+			HID_RI_REPORT_COUNT(8, 1),               /* one (fake) button */
+			HID_RI_REPORT_SIZE(8, 0x01),             /* one bit long */
+			HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+			HID_RI_REPORT_COUNT(8, 0x01),            /* one filler... */
+			HID_RI_REPORT_SIZE(8, 7),                /* ...7 bits long */
+			HID_RI_INPUT(8, HID_IOF_CONSTANT),
 
-			HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
-			HID_RI_USAGE(8, 0x02),                         /* Mouse */
-			HID_RI_COLLECTION(8, 0x01),                    /* Application Collection */
-					HID_RI_REPORT_ID(8, HID_REPORTID_MouseReport),
-				HID_RI_USAGE(8, 0x01),                      /* Pointer */
-				HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
-					HID_RI_USAGE_PAGE(8, 0x01),
-#if 0
-					HID_RI_USAGE(8, 0x30),                   /* X */
-#else
-					HID_RI_USAGE(8, 0x37),						/* Dial (relative) */
-#endif
-					HID_RI_LOGICAL_MINIMUM(8, -127),			/* ranging from -127... */
-					HID_RI_LOGICAL_MAXIMUM(8, 127),				/* ...to 127 */
-					HID_RI_REPORT_COUNT(8, 0x01),				/* one time... */
-					HID_RI_REPORT_SIZE(8, 0x08),				/* ...8 bits */
-					HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_RELATIVE),
-				HID_RI_END_COLLECTION(0),
-			HID_RI_END_COLLECTION(0),
-	/* Digital Joystick with two buttons:
+			HID_RI_USAGE_PAGE(8, 0x01),              /* Generic Desktop */
+			HID_RI_USAGE(8, 0x30),                   /* X */
+			HID_RI_USAGE(8, 0x31),                   /* Y */
+			HID_RI_LOGICAL_MINIMUM(16, -127),        /* ranging from -127... */
+			HID_RI_LOGICAL_MAXIMUM(16, 127),         /* ...to 127 */
+			HID_RI_REPORT_COUNT(8, 0x02),            /* 2 coordinates... */
+			HID_RI_REPORT_SIZE(8, 0x08),             /* ...each 8 bits */
+			HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_RELATIVE),
+		HID_RI_END_COLLECTION(0),
+	HID_RI_END_COLLECTION(0),
+
+	/* Digital Joystick with three buttons:
+	 * Mind the report id!
 	 *   Min X/Y Axis values: -1 (left/down)
 	 *   Max X/Y Axis values:  1 (right/up)
-	 *   Buttons: 2
+	 *   Buttons: 3
 	 */
-			HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
-			HID_RI_USAGE(8, 0x04),                         /* Joystick */
-			HID_RI_COLLECTION(8, 0x01),                    /* Application Collection */
-					HID_RI_REPORT_ID(8, HID_REPORTID_JoystickReport),
-				HID_RI_USAGE(8, 0x01),                      /* Pointer */
-				HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
-					HID_RI_USAGE(8, 0x30),                   /* X */
-					HID_RI_USAGE(8, 0x31),                   /* Y */
-					HID_RI_LOGICAL_MINIMUM(8, -1),           /* down/left */
-					HID_RI_LOGICAL_MAXIMUM(8, 1),            /* up/right */
-					HID_RI_REPORT_COUNT(8, 0x02),            /* two axes */
-					HID_RI_REPORT_SIZE(8, 0x04),             /* 2 bits each */
-					HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
-				HID_RI_END_COLLECTION(0),
+	HID_RI_USAGE_PAGE(8, 0x01),                    /* Generic Desktop */
+	HID_RI_USAGE(8, 0x04),                         /* Joystick */
+	HID_RI_COLLECTION(8, 0x01),                    /* Application Collection */
+		HID_RI_REPORT_ID(8, HID_REPORTID_JoystickReport),
+		HID_RI_USAGE(8, 0x01),                      /* Pointer */
+		HID_RI_COLLECTION(8, 0x00),                 /* Physical Collection */
+			HID_RI_USAGE(8, 0x30),                   /* X */
+			HID_RI_USAGE(8, 0x31),                   /* Y */
+			HID_RI_LOGICAL_MINIMUM(8, -1),           /* down/left */
+			HID_RI_LOGICAL_MAXIMUM(8, 1),            /* up/right */
+			HID_RI_REPORT_COUNT(8, 0x02),            /* two axes */
+			HID_RI_REPORT_SIZE(8, 0x04),             /* 2 bits each */
+			HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+		HID_RI_END_COLLECTION(0),
 
-				HID_RI_USAGE_PAGE(8, 0x09),                 /* Buttons */
-				HID_RI_USAGE_MINIMUM(8, 0x01),              /* from 1... */
-				HID_RI_USAGE_MAXIMUM(8, 0x03),              /* ...to 3 buttons */
-				HID_RI_LOGICAL_MINIMUM(8, 0x00),            /* each off... */
-				HID_RI_LOGICAL_MAXIMUM(8, 0x01),            /* ...or on */
-				HID_RI_REPORT_COUNT(8, 0x03),               /* two buttons */
-				HID_RI_REPORT_SIZE(8, 0x01),                /* one bit */
-				HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+		HID_RI_USAGE_PAGE(8, 0x09),                 /* Buttons */
+		HID_RI_USAGE_MINIMUM(8, 0x01),              /* from 1... */
+		HID_RI_USAGE_MAXIMUM(8, 0x03),              /* ...to 3 buttons */
+		HID_RI_LOGICAL_MINIMUM(8, 0x00),            /* each off... */
+		HID_RI_LOGICAL_MAXIMUM(8, 0x01),            /* ...or on */
+		HID_RI_REPORT_COUNT(8, 0x03),               /* two buttons */
+		HID_RI_REPORT_SIZE(8, 0x01),                /* one bit */
+		HID_RI_INPUT(8, HID_IOF_DATA | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
 
-				HID_RI_REPORT_SIZE(8, 0x05),				/* 5 bits... */
-				HID_RI_REPORT_COUNT(8, 0x01),               /* ...padding */
-				HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
-			HID_RI_END_COLLECTION(0),
-
+		HID_RI_REPORT_SIZE(8, 0x05),				/* 5 bits... */
+		HID_RI_REPORT_COUNT(8, 0x01),               /* ...padding */
+		HID_RI_INPUT(8, HID_IOF_CONSTANT | HID_IOF_VARIABLE | HID_IOF_ABSOLUTE),
+	HID_RI_END_COLLECTION(0),
 };
 
 /** Device descriptor structure. This descriptor, located in FLASH memory, describes the overall
