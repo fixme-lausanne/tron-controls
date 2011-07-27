@@ -28,42 +28,25 @@
   this software.
 */
 
-/** \file
- *
- *  Header file for Descriptors.c.
- */
-
-/* Includes: */
 #include <avr/pgmspace.h>
 
 #include <LUFA/Drivers/USB/USB.h>
 
-/* Type Defines: */
-/** Type define for the device configuration descriptor structure. This must be defined in the
- *  application code, as the configuration descriptor contains several sub-descriptors which
- *  vary between devices, and which describe the device's usage to the host.
- */
-typedef struct
-{
+typedef struct {
 	USB_Descriptor_Configuration_Header_t Config;
-	USB_Descriptor_Interface_t            HID_Interface;
-	USB_HID_Descriptor_HID_t              HID_JoystickHID;
-	USB_Descriptor_Endpoint_t             HID_ReportINEndpoint;
+	USB_Descriptor_Interface_t            HID1_MouseInterface;
+	USB_HID_Descriptor_HID_t              HID1_MouseHID;
+	USB_Descriptor_Endpoint_t             HID1_ReportINEndpoint;
+	USB_Descriptor_Interface_t            HID2_JoystickInterface;
+	USB_HID_Descriptor_HID_t              HID2_JoustickHID;
+	USB_Descriptor_Endpoint_t             HID2_ReportINEndpoint;
 } USB_Descriptor_Configuration_t;
 
-enum {
-	HID_REPORTID_JoystickReport = 1,
-	HID_REPORTID_MouseReport
-};
+#define MOUSE_EPNUM	1
+#define JOYSTICK_EPNUM  3
 
-/* Macros: */
-/** Endpoint number of the Joystick HID reporting IN endpoint. */
-#define JOYSTICK_EPNUM               1
+#define HID_EPSIZE      8
 
-/** Size in bytes of the Joystick HID reporting IN endpoint. */
-#define JOYSTICK_EPSIZE              8
-
-/* Function Prototypes: */
 uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,
 				    const uint8_t wIndex,
 				    const void** const DescriptorAddress)
